@@ -41,9 +41,9 @@ import org.springframework.core.annotation.AliasFor;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-@EnableDubboConfig
-@DubboComponentScan
-public @interface EnableDubbo {
+@EnableDubboConfig // jxh: 初始化Dubbo配置，注册相关基础Bean
+@DubboComponentScan // jxh: 扫描Dubbo业务Bean
+public @interface EnableDubbo { // jxh: 开启Dubbo功能
 
     /**
      * Base packages to scan for annotated @Service classes.

@@ -109,7 +109,7 @@ public class ServiceBean<T> extends ServiceConfig<T>
         }
         // register service bean
         ModuleModel moduleModel = DubboBeanUtils.getModuleModel(applicationContext);
-        moduleModel.getConfigManager().addService(this);
+        moduleModel.getConfigManager().addService(this); // jxh: 注册到configManager
         moduleModel.getDeployer().setPending();
     }
 

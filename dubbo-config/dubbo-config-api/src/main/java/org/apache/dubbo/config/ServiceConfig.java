@@ -542,10 +542,11 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void doExportUrls(RegisterTypeEnum registerType) {
+    private void doExportUrls(RegisterTypeEnum registerType) { // jxh: 启动服务监听
         ModuleServiceRepository repository = getScopeModel().getServiceRepository();
         ServiceDescriptor serviceDescriptor;
         final boolean serverService = ref instanceof ServerService;
+        // jxh: 缓存服务
         if (serverService) {
             serviceDescriptor = ((ServerService) ref).getServiceDescriptor();
             if (!this.provider.getUseJavaPackageAsPath()) {
@@ -572,7 +573,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
 
         List<URL> registryURLs = ConfigValidationUtils.loadRegistries(this, true);
 
-        for (ProtocolConfig protocolConfig : protocols) {
+        for (ProtocolConfig protocolConfig : protocols) { // jxh: 根据不同协议启动服务
             String pathKey = URL.buildKey(
                     getContextPath(protocolConfig).map(p -> p + "/" + path).orElse(path), group, version);
             // stub service will use generated service name
@@ -580,13 +581,13 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                 // In case user specified path, register service one more time to map it to path.
                 repository.registerService(pathKey, interfaceClass);
             }
-            doExportUrlsFor1Protocol(protocolConfig, registryURLs, registerType);
+            doExportUrlsFor1Protocol(protocolConfig, registryURLs, registerType); // jxh: 启动服务
         }
 
         providerModel.setServiceUrls(urls);
     }
 
-    private void doExportUrlsFor1Protocol(
+    private void doExportUrlsFor1Protocol( // jxh: 启动服务监听
             ProtocolConfig protocolConfig, List<URL> registryURLs, RegisterTypeEnum registerType) {
         Map<String, String> map = buildAttributes(protocolConfig);
 
@@ -854,7 +855,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
                             .build();
                 }
 
-                url = exportRemote(url, registryURLs, registerType);
+                url = exportRemote(url, registryURLs, registerType); // jxh: 启动服务监听
                 if (!isGeneric(generic) && !getScopeModel().isInternal()) {
                     MetadataUtils.publishServiceDefinition(url, providerModel.getServiceModel(), getApplicationModel());
                 }
@@ -930,7 +931,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private void doExportUrl(URL url, boolean withMetaData, RegisterTypeEnum registerType) {
+    private void doExportUrl(URL url, boolean withMetaData, RegisterTypeEnum registerType) { // jxh: 启动服务监听
         if (!url.getParameter(REGISTER_KEY, true)) {
             registerType = RegisterTypeEnum.MANUAL_REGISTER;
         }
@@ -940,7 +941,7 @@ public class ServiceConfig<T> extends ServiceConfigBase<T> {
             url = url.addParameter(REGISTER_KEY, false);
         }
 
-        Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, url);
+        Invoker<?> invoker = proxyFactory.getInvoker(ref, (Class) interfaceClass, url); // jxh: 创建rpc触发器
         if (withMetaData) {
             invoker = new DelegateProviderMetaDataInvoker(invoker, this);
         }

@@ -122,11 +122,11 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
             if (initialized) {
                 return;
             }
-            onInitialize();
+            onInitialize(); // jxh: org.apache.dubbo.common.deploy.DeployListener.onInitialize回调
 
-            loadConfigs();
+            loadConfigs(); // jxh: 加载&刷新配置
 
-            // read ModuleConfig
+            // read ModuleConfig jxh: 读取模块配置
             ModuleConfig moduleConfig = moduleModel
                     .getConfigManager()
                     .getModule()
@@ -153,7 +153,7 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
         // initialize，maybe deadlock applicationDeployer lock & moduleDeployer lock
         applicationDeployer.initialize();
 
-        return startSync();
+        return startSync(); // jxh: 启动模块
     }
 
     private synchronized Future startSync() throws IllegalStateException {
@@ -166,21 +166,21 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
                 return startFuture;
             }
 
-            onModuleStarting();
+            onModuleStarting(); // jxh: 发送模块启动事件
 
-            initialize();
+            initialize(); // jxh: 初始化模块
 
             // export services
-            exportServices();
+            exportServices(); // jxh: 暴露服务
 
             // prepare application instance
             // exclude internal module to avoid wait itself
             if (moduleModel != moduleModel.getApplicationModel().getInternalModule()) {
-                applicationDeployer.prepareInternalModule();
+                applicationDeployer.prepareInternalModule(); // jxh: 启动内部模块
             }
 
             // refer services
-            referServices();
+            referServices(); // jxh: 刷新服务
 
             // if no async export/refer services, just set started
             if (asyncExportingFutures.isEmpty() && asyncReferringFutures.isEmpty()) {
@@ -456,7 +456,7 @@ public class DefaultModuleDeployer extends AbstractDeployer<ModuleModel> impleme
                     () -> {
                         try {
                             if (!sc.isExported()) {
-                                sc.export();
+                                sc.export(); // jxh: 启动服务
                                 exportedServices.add(sc);
                             }
                         } catch (Throwable t) {

@@ -41,7 +41,7 @@ import static org.apache.dubbo.common.constants.LoggerCodeConstants.PROXY_ERROR_
 /**
  * This Invoker works on provider side, delegates RPC to interface implementation.
  */
-public abstract class AbstractProxyInvoker<T> implements Invoker<T> {
+public abstract class AbstractProxyInvoker<T> implements Invoker<T> { // jxh: 生产者接收请求invoker
     ErrorTypeAwareLogger logger = LoggerFactory.getErrorTypeAwareLogger(AbstractProxyInvoker.class);
 
     private final T proxy;
@@ -84,7 +84,7 @@ public abstract class AbstractProxyInvoker<T> implements Invoker<T> {
     public void destroy() {}
 
     @Override
-    public Result invoke(Invocation invocation) throws RpcException {
+    public Result invoke(Invocation invocation) throws RpcException { // jxh: 生产者接收请求执行流程
         ProfilerEntry originEntry = null;
         try {
             if (ProfilerSwitch.isEnableSimpleProfiler()) {

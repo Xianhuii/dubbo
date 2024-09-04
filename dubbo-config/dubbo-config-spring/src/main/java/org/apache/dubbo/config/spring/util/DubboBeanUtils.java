@@ -62,14 +62,14 @@ public interface DubboBeanUtils {
      * @see DubboConfigDefaultPropertyValueBeanPostProcessor
      * @see DubboConfigAliasPostProcessor
      */
-    static void registerCommonBeans(BeanDefinitionRegistry registry) {
+    static void registerCommonBeans(BeanDefinitionRegistry registry) { // jxh: 注册公共bean
 
         registerInfrastructureBean(registry, ServicePackagesHolder.BEAN_NAME, ServicePackagesHolder.class);
 
         registerInfrastructureBean(registry, ReferenceBeanManager.BEAN_NAME, ReferenceBeanManager.class);
 
         // Since 2.5.7 Register @Reference Annotation Bean Processor as an infrastructure Bean
-        registerInfrastructureBean(
+        registerInfrastructureBean( // jxh: 扫描@Reference
                 registry, ReferenceAnnotationBeanPostProcessor.BEAN_NAME, ReferenceAnnotationBeanPostProcessor.class);
 
         // TODO Whether DubboConfigAliasPostProcessor can be removed ?

@@ -58,7 +58,7 @@ import static org.apache.dubbo.rpc.Constants.SERIALIZATION_ID_KEY;
 /**
  * This Invoker works on Consumer side.
  */
-public abstract class AbstractInvoker<T> implements Invoker<T> {
+public abstract class AbstractInvoker<T> implements Invoker<T> { // jxh: 消费者请求invoker
 
     protected static final ErrorTypeAwareLogger logger = LoggerFactory.getErrorTypeAwareLogger(AbstractInvoker.class);
 

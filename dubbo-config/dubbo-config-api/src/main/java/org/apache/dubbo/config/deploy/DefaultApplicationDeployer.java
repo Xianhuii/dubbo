@@ -203,7 +203,7 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
      * Initialize
      */
     @Override
-    public void initialize() {
+    public void initialize() { // jxh: 初始化
         if (initialized) {
             return;
         }
@@ -212,23 +212,23 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
             if (initialized) {
                 return;
             }
-            onInitialize();
+            onInitialize(); // jxh: DeployListener#onInitialize()回调
 
             // register shutdown hook
-            registerShutdownHook();
+            registerShutdownHook(); // jxh: 注册DubboShutdownHook
 
-            startConfigCenter();
+            startConfigCenter(); // jxh: 启动配置中心
 
-            loadApplicationConfigs();
+            loadApplicationConfigs(); // jxh: 加载应用配置
 
-            initModuleDeployers();
+            initModuleDeployers(); // jxh: 初始化各个模块
 
-            initMetricsReporter();
+            initMetricsReporter(); // jxh: 初始化数据采集器
 
-            initMetricsService();
+            initMetricsService(); // jxh: 初始化数据服务
 
             // @since 2.7.8
-            startMetadataCenter();
+            startMetadataCenter(); // jxh: 启动元数据中心
 
             initialized = true;
 
@@ -655,7 +655,7 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
      * @return
      */
     @Override
-    public Future start() {
+    public Future start() { // jxh: 启动dubbo程序
         synchronized (startLock) {
             if (isStopping() || isStopped() || isFailed()) {
                 throw new IllegalStateException(getIdentifier() + " is stopping or stopped, can not start again");
@@ -684,9 +684,9 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
                 // started -> starting : re-start app
                 onStarting();
 
-                initialize();
+                initialize(); // jxh: 初始化
 
-                doStart();
+                doStart(); // jxh: 启动
             } catch (Throwable e) {
                 onFailed(getIdentifier() + " start failure", e);
                 throw e;
@@ -713,7 +713,7 @@ public class DefaultApplicationDeployer extends AbstractDeployer<ApplicationMode
     }
 
     private void doStart() {
-        startModules();
+        startModules(); // jxh: 启动模块
 
         // prepare application instance
         //        prepareApplicationInstance();

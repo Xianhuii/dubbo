@@ -767,19 +767,19 @@ public class ExtensionLoader<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private T createExtension(String name, boolean wrap) {
-        Class<?> clazz = getExtensionClasses().get(name);
+    private T createExtension(String name, boolean wrap) { // jxh: 创建扩展类
+        Class<?> clazz = getExtensionClasses().get(name); // jxh: 获取类
         if (clazz == null || unacceptableExceptions.contains(name)) {
             throw findException(name);
         }
         try {
             T instance = (T) extensionInstances.get(clazz);
             if (instance == null) {
-                extensionInstances.putIfAbsent(clazz, createExtensionInstance(clazz));
+                extensionInstances.putIfAbsent(clazz, createExtensionInstance(clazz)); // jxh: 通过反射实例化扩展类
                 instance = (T) extensionInstances.get(clazz);
-                instance = postProcessBeforeInitialization(instance, name);
-                injectExtension(instance);
-                instance = postProcessAfterInitialization(instance, name);
+                instance = postProcessBeforeInitialization(instance, name); // jxh: ExtensionPostProcessor#postProcessBeforeInitialization()回调
+                injectExtension(instance); // jxh: 执行setter方法注入
+                instance = postProcessAfterInitialization(instance, name); // jxh: ExtensionPostProcessor#postProcessAfterInitialization()回调
             }
 
             if (wrap) {
@@ -808,7 +808,7 @@ public class ExtensionLoader<T> {
 
             // Warning: After an instance of Lifecycle is wrapped by cachedWrapperClasses, it may not still be Lifecycle
             // instance, this application may not invoke the lifecycle.initialize hook.
-            initExtension(instance);
+            initExtension(instance); // jxh: Lifecycle#initialize()回调
             return instance;
         } catch (Throwable t) {
             throw new IllegalStateException(
@@ -977,7 +977,7 @@ public class ExtensionLoader<T> {
      * synchronized in getExtensionClasses
      */
     @SuppressWarnings("deprecation")
-    private Map<String, Class<?>> loadExtensionClasses() throws InterruptedException {
+    private Map<String, Class<?>> loadExtensionClasses() throws InterruptedException { // jxh: 加载扩展类
         checkDestroyed();
         cacheDefaultExtensionName();
 
@@ -1035,12 +1035,12 @@ public class ExtensionLoader<T> {
         }
     }
 
-    private void loadDirectoryInternal(
+    private void loadDirectoryInternal( // jxh: SPI加载类
             Map<String, Class<?>> extensionClasses, LoadingStrategy loadingStrategy, String type)
             throws InterruptedException {
-        String fileName = loadingStrategy.directory() + type;
+        String fileName = loadingStrategy.directory() + type; // jxh: 加载目录
         try {
-            List<ClassLoader> classLoadersToLoad = new LinkedList<>();
+            List<ClassLoader> classLoadersToLoad = new LinkedList<>(); // jxh: 类加载器
 
             // try to load from ExtensionLoader's ClassLoader first
             if (loadingStrategy.preferExtensionClassLoader()) {
@@ -1050,7 +1050,7 @@ public class ExtensionLoader<T> {
                 }
             }
 
-            if (specialSPILoadingStrategyMap.containsKey(type)) {
+            if (specialSPILoadingStrategyMap.containsKey(type)) { // jxh: special_spi.properties配置文件过滤加载
                 String internalDirectoryType = specialSPILoadingStrategyMap.get(type);
                 // skip to load spi when name don't match
                 if (!LoadingStrategy.ALL.equals(internalDirectoryType)
@@ -1064,7 +1064,7 @@ public class ExtensionLoader<T> {
                 Set<ClassLoader> classLoaders = scopeModel.getClassLoaders();
 
                 if (CollectionUtils.isEmpty(classLoaders)) {
-                    Enumeration<java.net.URL> resources = ClassLoader.getSystemResources(fileName);
+                    Enumeration<java.net.URL> resources = ClassLoader.getSystemResources(fileName); // jxh: 读取目录，加载扩展
                     if (resources != null) {
                         while (resources.hasMoreElements()) {
                             loadResource(
@@ -1129,7 +1129,7 @@ public class ExtensionLoader<T> {
         }
     }
 
-    private void loadResource(
+    private void loadResource( // jxh: 加载SPI文件
             Map<String, Class<?>> extensionClasses,
             ClassLoader classLoader,
             java.net.URL resourceURL,
@@ -1155,7 +1155,7 @@ public class ExtensionLoader<T> {
                             && isIncluded(clazz, includedPackages)
                             && !isExcludedByClassLoader(clazz, classLoader, onlyExtensionClassLoaderPackages)) {
 
-                        loadClass(
+                        loadClass( // jxh: 加载类
                                 classLoader,
                                 extensionClasses,
                                 resourceURL,
@@ -1328,7 +1328,7 @@ public class ExtensionLoader<T> {
     /**
      * cache name
      */
-    private void cacheName(Class<?> clazz, String name) {
+    private void cacheName(Class<?> clazz, String name) { // jxh: 缓存
         if (!cachedNames.containsKey(clazz)) {
             cachedNames.put(clazz, name);
         }

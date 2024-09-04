@@ -51,7 +51,7 @@ import static org.springframework.beans.factory.support.BeanDefinitionBuilder.ro
 public class DubboComponentScanRegistrar implements ImportBeanDefinitionRegistrar {
 
     @Override
-    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
+    public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) { // jxh: 扫描Dubbo业务Bean
 
         // initialize dubbo beans
         DubboSpringInitializer.initialize(registry);
@@ -74,7 +74,7 @@ public class DubboComponentScanRegistrar implements ImportBeanDefinitionRegistra
         builder.addConstructorArgValue(packagesToScan);
         builder.setRole(BeanDefinition.ROLE_INFRASTRUCTURE);
         AbstractBeanDefinition beanDefinition = builder.getBeanDefinition();
-        BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, registry);
+        BeanDefinitionReaderUtils.registerWithGeneratedName(beanDefinition, registry); // jxh: 注册ServiceAnnotationPostProcessor
     }
 
     private Set<String> getPackagesToScan(AnnotationMetadata metadata) {

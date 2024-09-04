@@ -37,7 +37,7 @@ import java.util.concurrent.locks.Lock;
 /**
  * Model of a service module
  */
-public class ModuleModel extends ScopeModel {
+public class ModuleModel extends ScopeModel { // jxh: 服务模块模型
     private static final Logger logger = LoggerFactory.getLogger(ModuleModel.class);
 
     public static final String NAME = "ModuleModel";
@@ -63,12 +63,16 @@ public class ModuleModel extends ScopeModel {
                 LOGGER.info(getDesc() + " is created");
             }
 
+            // jxh: 初始化基础信息
             initialize();
 
+            // jxh: 初始化服务仓库
             this.serviceRepository = new ModuleServiceRepository(this);
 
+            // jxh: SPI初始化ModuleExt
             initModuleExt();
 
+            // jxh: SPI初始化ScopeModelInitializer
             ExtensionLoader<ScopeModelInitializer> initializerExtensionLoader =
                     this.getExtensionLoader(ScopeModelInitializer.class);
             Set<ScopeModelInitializer> initializers = initializerExtensionLoader.getSupportedExtensionInstances();
@@ -80,6 +84,7 @@ public class ModuleModel extends ScopeModel {
             Assert.assertTrue(getConfigManager().isInitialized(), "ModuleConfigManager can not be initialized");
 
             // notify application check state
+            // jxh: 发送模块改变事件
             ApplicationDeployer applicationDeployer = applicationModel.getDeployer();
             if (applicationDeployer != null) {
                 applicationDeployer.notifyModuleChanged(this, DeployState.PENDING);

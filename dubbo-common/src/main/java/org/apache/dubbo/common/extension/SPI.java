@@ -58,10 +58,10 @@ public @interface SPI {
     /**
      * default extension name
      */
-    String value() default "";
+    String value() default ""; // jxh: 扩展名
 
     /**
      * scope of SPI, default value is application scope.
      */
-    ExtensionScope scope() default ExtensionScope.APPLICATION;
+    ExtensionScope scope() default ExtensionScope.APPLICATION; // jxh: 作用域
 }

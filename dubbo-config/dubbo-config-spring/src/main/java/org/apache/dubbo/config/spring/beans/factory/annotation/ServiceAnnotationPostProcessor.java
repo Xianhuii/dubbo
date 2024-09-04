@@ -113,7 +113,7 @@ public class ServiceAnnotationPostProcessor
 
     private static final List<Class<? extends Annotation>> serviceAnnotationTypes = loadServiceAnnotationTypes();
 
-    private static List<Class<? extends Annotation>> loadServiceAnnotationTypes() {
+    private static List<Class<? extends Annotation>> loadServiceAnnotationTypes() { // jxh: 扫描的注解
         if (Dubbo2CompactUtils.isEnabled() && Dubbo2CompactUtils.isServiceClassLoaded()) {
             return asList(
                     // @since 2.7.7 Add the @DubboService , the issue : https://github.com/apache/dubbo/issues/6007
@@ -204,7 +204,7 @@ public class ServiceAnnotationPostProcessor
      * @param packagesToScan The base packages to scan
      * @param registry       {@link BeanDefinitionRegistry}
      */
-    private void scanServiceBeans(Set<String> packagesToScan, BeanDefinitionRegistry registry) {
+    private void scanServiceBeans(Set<String> packagesToScan, BeanDefinitionRegistry registry) { // jxh: 扫描@Service
 
         scanned = true;
         if (CollectionUtils.isEmpty(packagesToScan)) {
@@ -223,7 +223,7 @@ public class ServiceAnnotationPostProcessor
 
         BeanNameGenerator beanNameGenerator = resolveBeanNameGenerator(registry);
         scanner.setBeanNameGenerator(beanNameGenerator);
-        for (Class<? extends Annotation> annotationType : serviceAnnotationTypes) {
+        for (Class<? extends Annotation> annotationType : serviceAnnotationTypes) { // jxh: 设置待扫描注解
             scanner.addIncludeFilter(new AnnotationTypeFilter(annotationType));
         }
 
@@ -260,7 +260,7 @@ public class ServiceAnnotationPostProcessor
                 }
 
                 for (BeanDefinitionHolder beanDefinitionHolder : beanDefinitionHolders) {
-                    processScannedBeanDefinition(beanDefinitionHolder);
+                    processScannedBeanDefinition(beanDefinitionHolder); // jxh: 注册bean
                     servicePackagesHolder.addScannedClass(
                             beanDefinitionHolder.getBeanDefinition().getBeanClassName());
                 }

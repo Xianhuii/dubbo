@@ -93,7 +93,7 @@ public class NettyServer extends AbstractServer {
      * @throws Throwable
      */
     @Override
-    protected void doOpen() throws Throwable {
+    protected void doOpen() throws Throwable { // jxh: 启动Netty服务监听
         bootstrap = new ServerBootstrap();
 
         bossGroup = createBossGroup();

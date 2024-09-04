@@ -77,9 +77,10 @@ public class ExtensionDirector implements ExtensionAccessor {
                     + ") is not an extension, because it is NOT annotated with @" + SPI.class.getSimpleName() + "!");
         }
 
-        // 1. find in local cache
+        // 1. find in local cache jxh: 本地缓存中查找
         ExtensionLoader<T> loader = (ExtensionLoader<T>) extensionLoadersMap.get(type);
 
+        // jxh: 缓存作用域
         ExtensionScope scope = extensionScopeMap.get(type);
         if (scope == null) {
             SPI annotation = type.getAnnotation(SPI.class);
@@ -92,14 +93,14 @@ public class ExtensionDirector implements ExtensionAccessor {
             loader = createExtensionLoader0(type);
         }
 
-        // 2. find in parent
+        // 2. find in parent jxh: 父容器中查找
         if (loader == null) {
             if (this.parent != null) {
                 loader = this.parent.getExtensionLoader(type);
             }
         }
 
-        // 3. create it
+        // 3. create it jxh: 创建
         if (loader == null) {
             loader = createExtensionLoader(type);
         }

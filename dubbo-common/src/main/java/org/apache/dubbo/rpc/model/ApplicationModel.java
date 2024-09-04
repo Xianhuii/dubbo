@@ -97,7 +97,7 @@ public class ApplicationModel extends ScopeModel {
         this(frameworkModel, false);
     }
 
-    protected ApplicationModel(FrameworkModel frameworkModel, boolean isInternal) {
+    protected ApplicationModel(FrameworkModel frameworkModel, boolean isInternal) { // jxh: 创建ApplicationModel
         super(frameworkModel, ExtensionScope.APPLICATION, isInternal);
         synchronized (instLock) {
             Assert.notNull(frameworkModel, "FrameworkModel can not be null");
@@ -106,11 +106,16 @@ public class ApplicationModel extends ScopeModel {
             if (LOGGER.isInfoEnabled()) {
                 LOGGER.info(getDesc() + " is created");
             }
+            // jxh: 初始化基础信息
             initialize();
 
+            // jxh: 初始化内部模块
             this.internalModule = new ModuleModel(this, true);
+
+            // jxh: 初始化服务仓库（缓存service和consumer）
             this.serviceRepository = new ServiceRepository(this);
 
+            // jxh: SPI初始化ApplicationInitListener
             ExtensionLoader<ApplicationInitListener> extensionLoader =
                     this.getExtensionLoader(ApplicationInitListener.class);
             Set<String> listenerNames = extensionLoader.getSupportedExtensions();
@@ -118,8 +123,10 @@ public class ApplicationModel extends ScopeModel {
                 extensionLoader.getExtension(listenerName).init();
             }
 
+            // jxh: SPI初始化ApplicationExt
             initApplicationExts();
 
+            // jxh: SPI初始化ScopeModelInitializer
             ExtensionLoader<ScopeModelInitializer> initializerExtensionLoader =
                     this.getExtensionLoader(ScopeModelInitializer.class);
             Set<ScopeModelInitializer> initializers = initializerExtensionLoader.getSupportedExtensionInstances();

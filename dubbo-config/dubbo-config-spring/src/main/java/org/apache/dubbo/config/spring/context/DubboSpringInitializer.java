@@ -96,7 +96,7 @@ public class DubboSpringInitializer {
         return null;
     }
 
-    private static void initContext(
+    private static void initContext( // jxh: 初始化Dubbo配置，注册相关基础Bean
             DubboSpringInitContext context,
             BeanDefinitionRegistry registry,
             ConfigurableListableBeanFactory beanFactory) {
@@ -104,9 +104,9 @@ public class DubboSpringInitializer {
         context.setBeanFactory(beanFactory);
 
         // customize context, you can change the bind module model via DubboSpringInitCustomizer SPI
-        customize(context);
+        customize(context); // jxh: SPI机制自定义初始化
 
-        // init ModuleModel
+        // init ModuleModel 初始化服务模块模型
         ModuleModel moduleModel = context.getModuleModel();
         if (moduleModel == null) {
             ApplicationModel applicationModel;
@@ -130,20 +130,20 @@ public class DubboSpringInitializer {
         logger.info(
                 "Bind " + moduleModel.getDesc() + " to spring container: " + ObjectUtils.identityToString(registry));
 
-        // set module attributes
+        // set module attributes 设置模块属性
         Map<String, Object> moduleAttributes = context.getModuleAttributes();
         if (moduleAttributes.size() > 0) {
             moduleModel.getAttributes().putAll(moduleAttributes);
         }
 
-        // bind dubbo initialization context to spring context
+        // bind dubbo initialization context to spring context 注册dubbo初始化上下文
         registerContextBeans(beanFactory, context);
 
         // mark context as bound
         context.markAsBound();
         moduleModel.setLifeCycleManagedExternally(true);
 
-        // register common beans
+        // register common beans 注册公共bean
         DubboBeanUtils.registerCommonBeans(registry);
     }
 
@@ -191,13 +191,13 @@ public class DubboSpringInitializer {
         // find initialization customizers
         Set<DubboSpringInitCustomizer> customizers = FrameworkModel.defaultModel()
                 .getExtensionLoader(DubboSpringInitCustomizer.class)
-                .getSupportedExtensionInstances();
+                .getSupportedExtensionInstances(); // SPI获取自定义DubboSpringInitCustomizer
         for (DubboSpringInitCustomizer customizer : customizers) {
-            customizer.customize(context);
+            customizer.customize(context); // jxh: 自定义初始化
         }
 
         // load customizers in thread local holder
-        DubboSpringInitCustomizerHolder customizerHolder = DubboSpringInitCustomizerHolder.get();
+        DubboSpringInitCustomizerHolder customizerHolder = DubboSpringInitCustomizerHolder.get(); // 获取线程自定义DubboSpringInitCustomizer
         customizers = customizerHolder.getCustomizers();
         for (DubboSpringInitCustomizer customizer : customizers) {
             customizer.customize(context);

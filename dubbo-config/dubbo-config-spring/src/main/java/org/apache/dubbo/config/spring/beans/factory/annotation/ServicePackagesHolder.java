@@ -20,7 +20,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * A temp holder for scanned packages of service.
+ * A temp holder for scanned packages of service. 临时保存扫描服务的包
  */
 public class ServicePackagesHolder {
 

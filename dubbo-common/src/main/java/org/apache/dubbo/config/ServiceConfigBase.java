@@ -419,7 +419,7 @@ public abstract class ServiceConfigBase<T> extends AbstractServiceConfig {
      * export service and auto start application instance
      */
     public final void export() {
-        export(RegisterTypeEnum.AUTO_REGISTER);
+        export(RegisterTypeEnum.AUTO_REGISTER); // jxh: 自动启动&暴露服务
     }
 
     public abstract void unexport();

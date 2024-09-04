@@ -40,7 +40,7 @@ import org.springframework.context.annotation.Import;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(DubboComponentScanRegistrar.class)
-public @interface DubboComponentScan {
+public @interface DubboComponentScan { // jxh: 扫描Dubbo业务Bean（org.apache.dubbo.config.annotation.Service和org.apache.dubbo.config.annotation.Reference）
 
     /**
      * Alias for the {@link #basePackages()} attribute. Allows for more concise annotation

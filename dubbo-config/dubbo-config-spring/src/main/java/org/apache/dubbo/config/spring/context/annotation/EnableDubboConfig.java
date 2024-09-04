@@ -68,7 +68,7 @@ import org.springframework.context.annotation.Import;
 @Inherited
 @Documented
 @Import(DubboConfigConfigurationRegistrar.class)
-public @interface EnableDubboConfig {
+public @interface EnableDubboConfig { // jxh: 解析Dubbo配置
 
     /**
      * It indicates whether binding to multiple Spring Beans.

@@ -191,7 +191,7 @@ public class DubboProtocol extends AbstractProtocol {
                 invoke(channel, ON_DISCONNECT_KEY);
             }
 
-            private void invoke(Channel channel, String methodKey) {
+            private void invoke(Channel channel, String methodKey) { // jxh: 触发service执行
                 Invocation invocation = createInvocation(channel, channel.getUrl(), methodKey);
                 if (invocation != null) {
                     try {
@@ -234,7 +234,7 @@ public class DubboProtocol extends AbstractProtocol {
              * @param methodKey
              * @return
              */
-            private Invocation createInvocation(Channel channel, URL url, String methodKey) {
+            private Invocation createInvocation(Channel channel, URL url, String methodKey) { // jxh: 创建rpc对应的执行信息
                 String method = url.getParameter(methodKey);
                 if (method == null || method.length() == 0) {
                     return null;
@@ -306,8 +306,8 @@ public class DubboProtocol extends AbstractProtocol {
         }
 
         String serviceKey = serviceKey(port, path, (String) inv.getObjectAttachmentWithoutConvert(VERSION_KEY), (String)
-                inv.getObjectAttachmentWithoutConvert(GROUP_KEY));
-        DubboExporter<?> exporter = (DubboExporter<?>) exporterMap.get(serviceKey);
+                inv.getObjectAttachmentWithoutConvert(GROUP_KEY)); // jxh: 拼接serviceKey
+        DubboExporter<?> exporter = (DubboExporter<?>) exporterMap.get(serviceKey); // jxh: 获取DubboExporter
 
         if (exporter == null) {
             throw new RemotingException(
@@ -394,7 +394,7 @@ public class DubboProtocol extends AbstractProtocol {
         }
     }
 
-    private ProtocolServer createServer(URL url) {
+    private ProtocolServer createServer(URL url) { // jxh: 创建dubbo协议服务
         url = URLBuilder.from(url)
                 // send readonly event when server closes, it's enabled by default
                 .addParameterIfAbsent(CHANNEL_READONLYEVENT_SENT_KEY, Boolean.TRUE.toString())

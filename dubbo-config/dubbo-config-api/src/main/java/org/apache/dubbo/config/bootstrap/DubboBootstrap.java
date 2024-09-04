@@ -226,7 +226,7 @@ public final class DubboBootstrap {
      * @param wait If true, wait for startup to complete, or else no waiting.
      * @return
      */
-    public DubboBootstrap start(boolean wait) {
+    public DubboBootstrap start(boolean wait) { // jxh: 启动DubboBootstrap
         Future future = applicationDeployer.start();
         if (wait) {
             try {

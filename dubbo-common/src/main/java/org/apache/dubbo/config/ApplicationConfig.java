@@ -76,7 +76,7 @@ import static org.apache.dubbo.config.Constants.TEST_ENVIRONMENT;
  *
  * @export
  */
-public class ApplicationConfig extends AbstractConfig {
+public class ApplicationConfig extends AbstractConfig { // jxh: 应用配置信息
     private static final ErrorTypeAwareLogger LOGGER = LoggerFactory.getErrorTypeAwareLogger(ApplicationConfig.class);
 
     private static final long serialVersionUID = 5508512956753757169L;
@@ -84,32 +84,32 @@ public class ApplicationConfig extends AbstractConfig {
     /**
      * Application name
      */
-    private String name;
+    private String name; // jxh: 应用名称
 
     /**
      * The application version
      */
-    private String version;
+    private String version; // jxh: 应用版本
 
     /**
      * Application owner
      */
-    private String owner;
+    private String owner; // jxh: 应用归属人
 
     /**
      * Application's organization (BU)
      */
-    private String organization;
+    private String organization; // jxh: 组织
 
     /**
      * Architecture layer
      */
-    private String architecture;
+    private String architecture; // jxh: 架构
 
     /**
      * Environment, e.g. dev, test or production
      */
-    private String environment;
+    private String environment; // jxh: 环境
 
     /**
      * Java compiler
@@ -124,7 +124,7 @@ public class ApplicationConfig extends AbstractConfig {
     /**
      * Registry centers
      */
-    private List<RegistryConfig> registries;
+    private List<RegistryConfig> registries; // jxh: 注册中心配置
 
     private String registryIds;
 

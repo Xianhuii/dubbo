@@ -138,7 +138,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
     public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
 
         String[] beanNames = beanFactory.getBeanDefinitionNames();
-        for (String beanName : beanNames) {
+        for (String beanName : beanNames) { // jxh: 遍历所有bean
             Class<?> beanType;
             if (beanFactory.isFactoryBean(beanName)) {
                 BeanDefinition beanDefinition = beanFactory.getBeanDefinition(beanName);
@@ -532,7 +532,7 @@ public class ReferenceAnnotationBeanPostProcessor extends AbstractAnnotationBean
 
         // Register the reference bean definition to the beanFactory
         RootBeanDefinition beanDefinition = new RootBeanDefinition();
-        beanDefinition.setBeanClassName(ReferenceBean.class.getName());
+        beanDefinition.setBeanClassName(ReferenceBean.class.getName()); // jxh: 注册ReferenceBean
         beanDefinition.getPropertyValues().add(ReferenceAttributes.ID, referenceBeanName);
 
         // set attribute instead of property values
